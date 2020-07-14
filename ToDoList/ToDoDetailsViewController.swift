@@ -59,14 +59,30 @@ class ToDoDetailsViewController: UIViewController {
         taskCompletionButton.isEnabled = false
         
     }
+    func completeTask(){
+        
+        toDoItem.isComplete = true
+        delegate?.update(task: toDoItem, index: toDoIndex)
+        disableButton()
+        
+    }
     
     @IBAction func taskDidComplete(_ sender: Any) {
         
-        toDoItem.isComplete = true
-
-        delegate?.update(task: toDoItem, index: toDoIndex)
         
-        disableButton()
+        let alert = UIAlertController(title: "Complete the task", message: "Are you sure you would like to complete this task ?", preferredStyle: .actionSheet)
+        let continueAction = UIAlertAction(title: "Continue", style: .default) { (action) in
+            self.completeTask()
+            
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+            alert.dismiss(animated: true, completion: nil)
+        }
+        alert.addAction(continueAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true)
+
+        
         
     }
     
